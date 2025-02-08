@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+section {
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input, select, button {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#productos-venta .producto-venta {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#productos-venta .producto-venta label {
+    margin-right: 10px;
+}
+
+#productos-venta .producto-venta select,
+#productos-venta .producto-venta input {
+    margin-right: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    section {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    #productos-venta .producto-venta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #productos-venta .producto-venta label,
+    #productos-venta .producto-venta select,
+    #productos-venta .producto-venta input {
+        margin-right: 0;
+        margin-top: 5px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
