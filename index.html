@@ -19,10 +19,53 @@
             <input type="number" id="precio-producto" name="precio-producto" required>
             <label for="stock-producto">Stock Inicial:</label>
             <input type="number" id="stock-producto" name="stock-producto" required>
-            <button type="submit">Registrar Producto</button>
+            <button type="submit" id="registrar-producto-btn">Registrar Producto</button>
         </form>
         <h3>Listado de Productos</h3>
         <ul id="lista-productos"></ul>
+
+        <!-- Tabla de Productos -->
+        <div class="table-container">
+            <!-- Barra de búsqueda -->
+            <div class="toolbar">
+                <input type="search" 
+                       class="form-control w-25" 
+                       data-table="products"
+                       placeholder="Buscar...">
+                
+                <button class="btn btn-primary" 
+                        id="nuevo-producto-btn">
+                    Nuevo Producto
+                </button>
+            </div>
+
+            <!-- Tabla -->
+            <table class="table" id="productsTable">
+                <thead>
+                    <tr>
+                        <th data-sort="name">Nombre</th>
+                        <th data-sort="price">Precio</th>
+                        <th data-sort="stock">Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Formulario de Producto -->
+        <div class="offcanvas" id="productForm">
+            <div class="offcanvas-header">
+                <h5>Nuevo Producto</h5>
+                <button type="button" class="btn-close" id="close-product-form">Cerrar</button>
+            </div>
+            <div class="offcanvas-body">
+                <form id="productFormContent">
+                    <input type="hidden" name="id">
+                    <!-- campos del formulario -->
+                </form>
+            </div>
+        </div>
     </section>
 
     <!-- Gestión de Clientes -->

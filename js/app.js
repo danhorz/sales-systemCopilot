@@ -12,6 +12,10 @@ const productosVenta = document.getElementById('productos-venta');
 const totalVenta = document.getElementById('total-venta');
 const listaVentas = document.getElementById('lista-ventas');
 const agregarProductoBtn = document.getElementById('agregar-producto');
+const nuevoProductoBtn = document.getElementById('nuevo-producto-btn');
+const productForm = document.getElementById('productForm');
+const closeProductFormBtn = document.getElementById('close-product-form');
+const productsTableBody = document.querySelector('#productsTable tbody');
 
 let productos = [];
 let clientes = [];
@@ -28,6 +32,7 @@ formProductos.addEventListener('submit', (e) => {
     actualizarListaProductos();
     actualizarSelectProductos();
     formProductos.reset();
+    productForm.style.display = 'none';
 });
 
 formClientes.addEventListener('submit', (e) => {
@@ -103,12 +108,30 @@ agregarProductoBtn.addEventListener('click', () => {
     productosVenta.appendChild(productoVentaDiv);
 });
 
+nuevoProductoBtn.addEventListener('click', () => {
+    productForm.style.display = 'block';
+});
+
+closeProductFormBtn.addEventListener('click', () => {
+    productForm.style.display = 'none';
+});
+
 function actualizarListaProductos() {
     listaProductos.innerHTML = '';
+    productsTableBody.innerHTML = '';
     productos.forEach(producto => {
         const li = document.createElement('li');
         li.textContent = `${producto.name} - Precio: $${producto.price} - Stock: ${producto.stock}`;
         listaProductos.appendChild(li);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${producto.name}</td>
+            <td>${producto.price}</td>
+            <td>${producto.stock}</td>
+            <td><button class="btn btn-danger btn-sm">Eliminar</button></td>
+        `;
+        productsTableBody.appendChild(tr);
     });
 }
 
@@ -165,4 +188,63 @@ function actualizarTotalVenta() {
         }
     });
     totalVenta.textContent = total.toFixed(2);
+}
+
+// Búsqueda en tiempo real
+document.querySelectorAll('input[data-table]').forEach(input => {
+    input.addEventListener('input', (e) => {
+        const tableId = e.target.dataset.table + 'Table';
+        searchTable(tableId, e.target.value);
+    });
+});
+
+function searchTable(tableId, searchText) {
+    const table = document.getElementById(tableId);
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowText = Array.from(cells).map(cell => cell.textContent).join(' ');
+        row.style.display = rowText.toLowerCase().includes(searchText.toLowerCase()) ? '' : 'none';
+    });
+}
+
+// Ordenamiento por columnas
+document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', (e) => {
+        const column = e.target.dataset.sort;
+        const currentDir = e.target.classList.contains('sort-asc') 
+            ? 'desc' 
+            : 'asc';
+            
+        // Actualizar estados de ordenamiento
+        document.querySelectorAll('th').forEach(el => 
+            el.classList.remove('sort-asc', 'sort-desc')
+        );
+        e.target.classList.add(`sort-${currentDir}`);
+        
+        // Ordenar tabla
+        const tableId = e.target.closest('table').id;
+        sortTable(tableId, column, currentDir);
+    });
+});
+
+function sortTable(tableId, column, direction) {
+    const table = document.getElementById(tableId);
+    const rows = Array.from(table.querySelectorAll('tbody tr'));
+    const columnIndex = Array.from(table.querySelectorAll('th')).findIndex(th => th.dataset.sort === column);
+
+    rows.sort((a, b) => {
+        const aText = a.querySelectorAll('td')[columnIndex].textContent;
+        const bText = b.querySelectorAll('td')[columnIndex].textContent;
+
+        if (direction === 'asc') {
+            return aText.localeCompare(bText, undefined, { numeric: true });
+        } else {
+            return bText.localeCompare(aText, undefined, { numeric: true });
+        }
+    });
+
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+    rows.forEach(row => tbody.appendChild(row));
 }
